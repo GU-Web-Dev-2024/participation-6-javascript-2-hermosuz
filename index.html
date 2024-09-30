@@ -54,18 +54,38 @@
     </div>
 
     <script>
-        // JavaScript code goes here   
+        // Random number generator 1-10
+        const randomNumber = Math.floor(Math.random() * 10) + 1;
+        let guessesRemaining = 3;  // Set the number of guesses allowed
+        let guessedCorrectly = false;  // To track if the guess was correct
 
-
-        // Added a click listener to the button (will be covered more in zyBook 7.4), 
-        // for now just use the following which:
-        // uses the document object and selects the element with a matching Id found in the DOM.
-        // adds an event listener (for a click) of that selected element.
-        // executes the code in the body of the anonymous function
+        // Add an event listener for the button
         document.getElementById('guess-button').addEventListener('click', function () {
-            //function body -- any code here will be executed when the registered event is triggered.
-        });
+            const userGuess = Number(document.getElementById('guess-input').value);  // Get the user's guess
+            let message = '';  // Initialize message
 
+            // Check if the user has guesses remaining
+            if (guessesRemaining > 0 && !guessedCorrectly) {
+                if (userGuess === randomNumber) {
+                    message = 'Correct! You guessed the number!';
+                    guessedCorrectly = true;  // Mark as correct guess
+                } else if (userGuess > randomNumber) {
+                    message = 'Too high! Try again.';
+                } else if (userGuess < randomNumber) {
+                    message = 'Too low! Try again.';
+                }
+                guessesRemaining--;  // Reduce the number of remaining guesses
+            }
+
+            // Check if the user has no guesses left
+            if (guessesRemaining === 0 && !guessedCorrectly) {
+                message = `Out of guesses! The correct number was ${randomNumber}.`;
+            }
+
+            // Update the message in the HTML
+            document.getElementById('message').textContent = message;
+
+        });
     </script>
 </body>
 
