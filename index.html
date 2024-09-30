@@ -45,6 +45,7 @@
 
         <div>
             <button id="guess-button">Submit Guess</button>
+            <button id="reset-button" style="display:none;">Reset Game</button>
         </div>
 
         <div>
@@ -54,37 +55,50 @@
     </div>
 
     <script>
-        // Random number generator 1-10
-        const randomNumber = Math.floor(Math.random() * 10) + 1;
-        let guessesRemaining = 3;  // Set the number of guesses allowed
-        let guessedCorrectly = false;  // To track if the guess was correct
+        // Initial game setup
+        let randomNumber = Math.floor(Math.random() * 10) + 1;
+        let guessesRemaining = 3;
+        let guessedCorrectly = false;
 
-        // Add an event listener for the button
+        // Guess button logic
         document.getElementById('guess-button').addEventListener('click', function () {
-            const userGuess = Number(document.getElementById('guess-input').value);  // Get the user's guess
-            let message = '';  // Initialize message
+            const userGuess = Number(document.getElementById('guess-input').value);
+            let message = '';
 
-            // Check if the user has guesses remaining
             if (guessesRemaining > 0 && !guessedCorrectly) {
                 if (userGuess === randomNumber) {
                     message = 'Correct! You guessed the number!';
-                    guessedCorrectly = true;  // Mark as correct guess
+                    guessedCorrectly = true;
+                    document.getElementById('reset-button').style.display = 'inline';  // Show the reset button
                 } else if (userGuess > randomNumber) {
                     message = 'Too high! Try again.';
                 } else if (userGuess < randomNumber) {
                     message = 'Too low! Try again.';
                 }
-                guessesRemaining--;  // Reduce the number of remaining guesses
+                guessesRemaining--;
             }
 
-            // Check if the user has no guesses left
             if (guessesRemaining === 0 && !guessedCorrectly) {
                 message = `Out of guesses! The correct number was ${randomNumber}.`;
+                document.getElementById('reset-button').style.display = 'inline';  // Show the reset button
             }
 
-            // Update the message in the HTML
             document.getElementById('message').textContent = message;
+        });
 
+        // Reset button logic
+        document.getElementById('reset-button').addEventListener('click', function () {
+            // Reset the game state
+            randomNumber = Math.floor(Math.random() * 10) + 1;  // Generate new random number
+            guessesRemaining = 3;  // Reset guesses
+            guessedCorrectly = false;  
+
+            // Clear the message and input field
+            document.getElementById('message').textContent = '';
+            document.getElementById('guess-input').value = '';
+
+            // Hide the reset button again
+            document.getElementById('reset-button').style.display = 'none';
         });
     </script>
 </body>
